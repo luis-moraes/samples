@@ -6,6 +6,7 @@ import javax.ws.rs.QueryParam;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +17,28 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.luisca.sample.domain.Pagina;
 import br.com.luisca.sample.domain.SampleRepository;
 import br.com.luisca.sample.exception.ApiException;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @RestController
 @EnableAutoConfiguration
+@EnableSwagger2
 public class SampleApplication {
 	
 	private static final String CHARSET_UTF8 = ";charset=utf-8";
+	
+	 @Bean
+	    public Docket swaggerSettings() {
+	        return new Docket(DocumentationType.SWAGGER_2)
+	                .select()
+	                .apis(RequestHandlerSelectors.any())
+	                .paths(PathSelectors.any())
+	                .build()
+	                .pathMapping("/");
+	    }
 
 	@RequestMapping("/")
     @ResponseBody
